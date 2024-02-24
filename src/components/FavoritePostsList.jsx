@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { Button, Link, Typography, Card, CardContent } from "@mui/material";
+import React from "react";
+import { Button, Link, Typography, Card, CardContent } from "@mui/material"; // Import Material-UI components
 
-function FavoritePostsList({ favorites, toggleFavorite }) {
-  const [favoritePosts, setFavoritePosts] = useState([]);
-  console.log("Favorites:", favorites);
-  useEffect(() => {
-    const fetchFavoritePosts = async () => {
-      const favoritePostsData = [];
-      for (const postId of favorites) {
-        try {
-          const response = await axios.get(`https://www.reddit.com/api/info.json?id=t3_${postId}`);
-          const postData = response.data.data.children[0].data;
-          favoritePostsData.push(postData);
-        } catch (error) {
-          console.error("Error fetching favorite post:", error);
-        }
-      }
-      setFavoritePosts(favoritePostsData);
-    };
-
-    fetchFavoritePosts();
-  }, [favorites]);
+function FavoritePostsList({ favorites, posts, toggleFavorite }) {
+  // Filter posts to only contain favorite posts
+  const favoritePosts = posts.filter((post) => favorites.includes(post.id));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
